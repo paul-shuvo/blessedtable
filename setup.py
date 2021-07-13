@@ -12,7 +12,7 @@ with open("README.md") as f:
 
 setup(
     name="blessedtable-paul_shuvo",
-    version="1.0.0-alpha0.1",
+    version="1.0.1a2",
     author="Shuvo Kumar Paul",
     author_email="shuvo.k.paul@gmail.com",
     url="https://github.com/paul-shuvo/blessedtable",
@@ -26,7 +26,6 @@ setup(
     package_dir={"": "blessedtable"},
     packages=find_packages(where="blessedtable"),
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
