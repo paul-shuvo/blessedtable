@@ -1,0 +1,2 @@
+blessed
+texttable==1.6.4

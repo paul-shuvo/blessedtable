@@ -1,4 +1,4 @@
-from texttable import Texttable, ArraySizeError
+from texttable import *
 from blessed import Terminal
 
 class Blessedtable(Texttable):
@@ -31,8 +31,6 @@ class Blessedtable(Texttable):
     @border_format.setter
     def border_format(self, value):
         self._border_format = value  
-        self._header_formatter = []
-        self._column_formatter = []
         self._init_formatters()  
 
     @property
@@ -93,6 +91,9 @@ class Blessedtable(Texttable):
                 self._header_formatter.append(self.term.formatter(hf))       
         else:
             raise ValueError("header_format is not a valid argument")
+        
+        if self._column_format is None and self._header_format is not None:
+            self._column_formatter = self._header_formatter
           
     def add_rows(self, rows, header=True):
         """Add several rows in the rows stack
@@ -237,24 +238,26 @@ class Blessedtable(Texttable):
 #     print(table.draw())
 #     print()
 
-table = Blessedtable(header_format='green_on_blue', border_format='blue_on_red')
-table.set_cols_align(["l", "r", "c"])
-table.set_cols_valign(["t", "m", "b"])
-table.add_rows([["Name", "Age", "Nickname"],
-    ["Mr\nXavier\nHuon", 32, "Xav'"],
-    ["Mr\nBaptiste\nClement", 1, "Baby"],
-    ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
+# table = Blessedtable(header_format='green_on_blue', border_format='blue_on_red')
+# table.set_cols_align(["l", "r", "c"])
+# table.set_cols_valign(["t", "m", "b"])
+# table.add_rows([["Name", "Age", "Nickname"],
+#     ["Mr\nXavier\nHuon", 32, "Xav'"],
+#     ["Mr\nBaptiste\nClement", 1, "Baby"],
+#     ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
 
-for i in range(15,16):
-    # print(i)
-    table.set_deco(i)
-    print(table.draw())
-    print(table.header_format)
-#  = None
-    # table.reset()
-    table.border_format = 'bold_orange'
-    table.header_format = 'green_on_white'
-    table.column_format = 'blue_on_white'
-    print(table.draw())
-    print(table.border_format)
+# for i in range(15,16):
+#     # print(i)
+#     table.set_deco(i)
+#     print(table.draw())
+#     print(table.header_format)
+# #  = None
+#     # table.reset()
+#     hf = ['green', 'italic_blue', 'purple']
+#     cf = ['white_on_green', 'italic_orange_on_blue', 'teal']
+#     table.header_format = hf
+#     table.border_format = 'yellow'
+#     # table.column_format = cf
+#     print(table.draw())
+#     print(table.border_format)
     
