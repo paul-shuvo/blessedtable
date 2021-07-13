@@ -7,6 +7,7 @@ from setuptools import setup, find_packages
 import os
 
 DESCRIPTION = "module for creating simple colorful formatted ASCII tables"
+HERE = os.path.dirname(__file__)
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
