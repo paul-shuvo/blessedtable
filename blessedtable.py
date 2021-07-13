@@ -15,19 +15,6 @@ class Blessedtable(Texttable):
         self.border_formatter = self.term.formatter('normal_on_normal') if not border_format else self.term.formatter(border_format)
         self.header_formatter = []
         self.column_formatter = []
-        # self.cell_formatter = self.term.formatter('normal_on_normal') if not cell_format else self.term.formatter(cell_format)
-        # self.header_formatter = None if not header_format else self.term.formatter(header_format)
-
-        # self.column_formatter = []
-        # None if not header_format else self.term.formatter(header_format)
-        # if column_format is not None:
-        #     if isinstance(header_format, str):
-        #         d
-        #     elif isinstance(header_format, list):
-        #         for cf in column_format:
-        #             self.column_formatter.append(self.term.formatter(cf))
-        # else:
-                
 
         self.set_max_width(max_width)
         self._precision = 3
@@ -116,12 +103,10 @@ class Blessedtable(Texttable):
         line = self._splitit(line, isheader)
         space = " "
         out = ""
+        formatter = self.header_formatter if isheader else self.column_formatter
         for i in range(len(line[0])):
             if self._has_border():
-                if isheader:
-                    out += "%s%s" % (self._char_vert, self.header_formatter[0](space))
-                else:
-                    out += "%s%s" % (self._char_vert, self.column_formatter[0](space))
+                out += "%s%s" % (self._char_vert, formatter[0](space))
             length = 0
             column_num = 0
             for cell, width, align in zip(line, self._width, self._align):
@@ -133,32 +118,17 @@ class Blessedtable(Texttable):
                 if isheader:
                     align = self._header_align[length - 1]
                 if align == "r":
-                    if isheader:
-                        out += self.header_formatter[column_num](fill * space + cell_line)
-                    else:
-                        out += self.column_formatter[column_num](fill * space + cell_line)
+                    out += formatter[column_num](fill * space + cell_line)
                 elif align == "c":
-                    if isheader:
-                        out += self.header_formatter[column_num]((int(fill/2) * space + cell_line \
-                                + int(fill/2 + fill%2) * space))
-                    else:
-                        out += self.column_formatter[column_num]((int(fill/2) * space + cell_line \
+                    out += formatter[column_num]((int(fill/2) * space + cell_line \
                                 + int(fill/2 + fill%2) * space))
                 else:
-                    if isheader:
-                        out += self.header_formatter[column_num](cell_line + fill * space)
-                    else:
-                        out += self.column_formatter[column_num](cell_line + fill * space)
+                    out += formatter[column_num](cell_line + fill * space)
                 if length < len(line):
-                    if isheader:
-                        out += "%s%s%s" % (self.header_formatter[column_num](space), [self.header_formatter[column_num](space), self._char_vert][self._has_vlines()], self.header_formatter[column_num+1](space))
-                    else:
-                        out += "%s%s%s" % (self.column_formatter[column_num](space), [self.column_formatter[column_num](space), self._char_vert][self._has_vlines()], self.column_formatter[column_num+1](space))
+                    out += "%s%s%s" % (formatter[column_num](space), [formatter[column_num](space), self._char_vert][self._has_vlines()], formatter[column_num+1](space))
                 column_num += 1
-            if isheader:
-                out += "%s\n" % ['', self.header_formatter[len(self.column_formatter)-1](" ") + self._char_vert][self._has_border()]
-            else:
-                out += "%s\n" % ['', self.column_formatter[len(self.column_formatter)-1](" ") + self._char_vert][self._has_border()]
+                
+            out += "%s\n" % ['', formatter[len(formatter)-1](" ") + self._char_vert][self._has_border()]
         return out
    
     def _build_hline(self, is_header=False):
@@ -208,41 +178,3 @@ class Blessedtable(Texttable):
         if self._has_border():
             out += self._hline()
         return out[:-1]
-  
-# bold underline reverse blink italic standout
-cf = ['black_on_white', 'pink_on_magenta', 'green_on_purple']
-# cf = 'turquoise_on_orange'
-hf = ['black_on_white', 'pink_on_magenta', 'green_on_yellow']
-
-# hf = 'white_on_teal'
-# hf=None
-table = Blessedtable(border_format='green', 
-                     header_format=hf,
-                     column_format=cf)
-# table = Texttable()
-# table.set_cols_align(["c", "l", "r", "r", "c"])
-# table.set_cols_valign(["t", "m", "b", "t", "b"])
-table.add_rows([["Name", "Age", "Nickname"],
-                ["Mr\nXavier\nHuon", 32, "Xav'"],
-                ["Mr\nBaptiste\nClement", 1, "Baby"],
-                ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
-
-
-
-
-# table.set_deco(7)
-# table.set_cols_dtype(['t',  # text
-#                     'f',  # float (decimal)
-#                     'e',  # float (exponent)
-#                     'i',  # integer
-#                     'a']) # automatic
-# table.set_cols_align(["c", "r", "r", "r", "l"])
-# table.add_rows([["text",    "float", "exp", "int", "auto"],
-#                 ["abcdfd\nfdfhdfhfghjd",    "67",    654,   89,    128.001],
-#                 ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
-#                 ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
-#                 ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
-print(table.draw())
-# print(table._deco)
-
-# print(len(table._rows[0]))

@@ -3,7 +3,7 @@
 import re
 import sys
 from textwrap import dedent
-from texttable import Texttable
+from blessedtable import Blessedtable as Texttable
 
 if sys.version >= '3':
     u_dedent = dedent
