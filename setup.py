@@ -3,26 +3,28 @@
 # texttable - module for creating simple ASCII tables
 # Copyright (C) 2003-2020 Gerome Fournier <jef(at)foutaise.org>
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
-DESCRIPTION = "module for creating simple ASCII tables"
+DESCRIPTION = "module for creating simple colorful formatted ASCII tables"
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
 setup(
-    name="texttable",
-    version="1.6.3",
-    author="Gerome Fournier",
-    author_email="jef@foutaise.org",
-    url="https://github.com/foutaise/texttable/",
-    download_url="https://github.com/foutaise/texttable/archive/v1.6.3.tar.gz",
+    name="blessedtable-paul_shuvo",
+    version="1.0.0-alpha0.1",
+    author="Shuvo Kumar Paul",
+    author_email="shuvo.k.paul@gmail.com",
+    url="https://github.com/paul-shuvo/blessedtable",
+    download_url="https://github.com/paul-shuvo/blessedtable/archive/refs/tags/v1.0.0-alpha.zip",
     license="MIT",
-    py_modules=["texttable"],
+    py_modules=["blessedtable"],
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     platforms="any",
+    package_dir={"": "blessedtable"},
+    packages=find_packages(where="blessedtable"),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',

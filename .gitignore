@@ -2,8 +2,9 @@
 /.coverage
 /.tox/
 /MANIFEST
-/__pycache__/
+*/__pycache__/
 *.egg-info/
 *.pyc
 store.py
 /.vscode
+/dist
