@@ -31,7 +31,7 @@ table.add_rows([["Name", "Age", "Nickname"],
 
 print(table.draw())
 ```
-![](_doc/empty_table.png)
+![](https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/_doc/empty_table.png)
 
 For styleing `blessedtable` uses three parameters over `textable`. These are `border_format, header_format, and column_format`. 
 
@@ -67,7 +67,7 @@ table.column_format = 'blue_on_rosybrown2'
 
 print(table.draw())
 ```
-![](_doc/init_table.png)
+![](https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/_doc/init_table.png)
 
 To achieve different colors for the columns for both header and the rows, pass a list having format string for each of the columns.
 
@@ -82,4 +82,4 @@ table.column_format = cf
 
 print(table.draw())
 ```
-![](_doc/mul_format_table.png)
+![](https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/_doc/mul_format_table.png)

@@ -5,29 +5,32 @@
 
 from setuptools import setup, find_packages
 import os
+from os.path import dirname
 
 DESCRIPTION = "module for creating simple colorful formatted ASCII tables"
-HERE = os.path.dirname(__file__)
+HERE = dirname(__file__)
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
-def _get_install_requires(fname):
-    result = [req_line.strip() for req_line in open(fname)
-              if req_line.strip() and not req_line.startswith('#')]
+# def _get_install_requires(fname):
+#     result = [req_line.strip() for req_line in open(fname)
+#               if req_line.strip() and not req_line.startswith('#')]
 
-    return result
+#     return result
 
 setup(
     name="blessedtable",
-    version="1.0.0a4",
+    version="1.0.0b1",
     author="Shuvo Kumar Paul",
     author_email="shuvo.k.paul@gmail.com",
     url="https://github.com/paul-shuvo/blessedtable",
-    download_url="https://github.com/paul-shuvo/blessedtable/archive/refs/tags/v1.0.0-alpha.zip",
+    download_url="https://github.com/paul-shuvo/blessedtable/archive/refs/tags/v1.0.0b1.zip",
     license="MIT",
-    install_requires=_get_install_requires(
-    fname=os.path.join(HERE, 'requirements.txt')),
+    install_requires=[
+            "blessed",
+            "texttable==1.6.4"
+        ],
     py_modules=["blessedtable"],
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
