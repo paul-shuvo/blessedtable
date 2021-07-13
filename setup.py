@@ -11,8 +11,8 @@ with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
 setup(
-    name="blessedtable-paul_shuvo",
-    version="1.0.1a2",
+    name="blessedtable",
+    version="1.0.0a3",
     author="Shuvo Kumar Paul",
     author_email="shuvo.k.paul@gmail.com",
     url="https://github.com/paul-shuvo/blessedtable",

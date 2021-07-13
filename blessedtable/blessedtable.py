@@ -9,51 +9,91 @@ class Blessedtable(Texttable):
                  header_format=None,
                  column_format=None):
         self.term = Terminal()
-        # self.border_format = border_format
-        self.header_format = header_format
-        self.column_format = column_format
-        self.border_formatter = self.term.formatter('normal_on_normal') if not border_format else self.term.formatter(border_format)
-        self.header_formatter = []
-        self.column_formatter = []
+        self._border_format = border_format
+        self._header_format = header_format
+        self._column_format = column_format
+        self._border_formatter = None
+        self._header_formatter = []
+        self._column_formatter = []
+        self._column = None
 
         self.set_max_width(max_width)
         self._precision = 3
         self._deco = Texttable.VLINES | Texttable.HLINES | Texttable.BORDER | \
             Texttable.HEADER
-        self.set_chars(['-', '|', '+', '='])
+        # self.set_chars(['-', '|', '+', '='])
         self.reset()
     
-    def _init_formatters(self, num_columns):
+    @property
+    def border_format(self):
+        return self._border_format
+    
+    @border_format.setter
+    def border_format(self, value):
+        self._border_format = value  
+        self._header_formatter = []
+        self._column_formatter = []
+        self._init_formatters()  
+
+    @property
+    def header_format(self):
+        return self._header_format
+    
+    @header_format.setter
+    def header_format(self, value):
+        self._header_format = value
+        self._init_formatters()
+    
+    @property
+    def column_format(self):
+        return self._column_format
+    
+    @column_format.setter
+    def column_format(self, value):
+        self._column_format = value
+        self._init_formatters()
+    
+    def _init_formatters(self):
         """Initialize cell formatters.
         - num_columns defines the number of columns in the table
         """
+        assert self._num_columns is not None, "Add rows first in roder to determine the number of columns"
         
-        if self.column_format is None:
+        self._hline_string = None
+        self._header_formatter = []
+        self._column_formatter = []
+        # self._header = []
+
+
+        self._border_formatter = self.term.formatter('normal_on_normal') if self._border_format is None else self.term.formatter(self._border_format)
+        self.set_chars(['-', '|', '+', '='])
+        num_columns = self._num_columns
+        
+        if self._column_format is None:
             for i in range(num_columns):
-                self.column_formatter.append(self.term.formatter("normal_on_normal"))
-        elif isinstance(self.column_format, str):
+                self._column_formatter.append(self.term.formatter("normal_on_normal"))
+        elif isinstance(self._column_format, str):
             for i in range(num_columns):
-                self.column_formatter.append(self.term.formatter(self.column_format))
-        elif isinstance(self.column_format, list):
-            assert len(self.column_format) == num_columns, "%s columns formats required, found %s" % (num_columns, len(self.column_format)) 
-            for cf in self.column_format:
-                self.column_formatter.append(self.term.formatter(cf))       
+                self._column_formatter.append(self.term.formatter(self._column_format))
+        elif isinstance(self._column_format, list):
+            assert len(self._column_format) == num_columns, "%s columns formats required, found %s" % (num_columns, len(self._column_format)) 
+            for cf in self._column_format:
+                self._column_formatter.append(self.term.formatter(cf))       
         else:
             raise ValueError("column_format is not a valid argument")
 
-        if self.header_format is None:
-            self.header_formatter = self.column_formatter
-        elif isinstance(self.header_format, str):
+        if self._header_format is None:
+            self._header_formatter = self._column_formatter
+        elif isinstance(self._header_format, str):
             for i in range(num_columns):
-                self.header_formatter.append(self.term.formatter(self.header_format))
-        elif isinstance(self.header_format, list):
-            assert len(self.header_format) == num_columns, "%s header formats required" % num_columns 
-            for hf in self.header_format:
-                self.header_formatter.append(self.term.formatter(hf))       
+                self._header_formatter.append(self.term.formatter(self._header_format))
+        elif isinstance(self._header_format, list):
+            assert len(self._header_format) == num_columns, "%s header formats required" % num_columns 
+            for hf in self._header_format:
+                self._header_formatter.append(self.term.formatter(hf))       
         else:
             raise ValueError("header_format is not a valid argument")
-        
-    
+          
     def add_rows(self, rows, header=True):
         """Add several rows in the rows stack
 
@@ -62,8 +102,8 @@ class Blessedtable(Texttable):
         - 'header' specifies if the first row should be used as the header
           of the table
         """
-
-        self._init_formatters(len(rows[0]))
+        self._num_columns = len(rows[0])
+        self._init_formatters()
         # nb: don't use 'iter' on by-dimensional arrays, to get a
         #     usable code for python 2.1
         if header:
@@ -92,7 +132,7 @@ class Blessedtable(Texttable):
             raise ArraySizeError("array should contain 4 characters")
         array = [ x[:1] for x in [ str(s) for s in array ] ]
         (self._char_horiz, self._char_vert,
-            self._char_corner, self._char_header) = [self.border_formatter(s) for s in array]
+            self._char_corner, self._char_header) = [self._border_formatter(s) for s in array]
         return self
     
     def _draw_line(self, line, isheader=False):
@@ -103,14 +143,14 @@ class Blessedtable(Texttable):
         line = self._splitit(line, isheader)
         space = " "
         out = ""
-        formatter = self.header_formatter if isheader else self.column_formatter
+        formatter = self._header_formatter if isheader else self._column_formatter
         for i in range(len(line[0])):
             if self._has_border():
                 out += "%s%s" % (self._char_vert, formatter[0](space))
             length = 0
             column_num = 0
             for cell, width, align in zip(line, self._width, self._align):
-                # out += "%s" % self.column_formatter[0](space) if column_num == 0 else ""
+                # out += "%s" % self._column_formatter[0](space) if column_num == 0 else ""
                 space_ = space
                 length += 1
                 cell_line = cell[i]
@@ -147,7 +187,7 @@ class Blessedtable(Texttable):
         if self._has_border():
             l = "%s%s%s%s%s\n" % (self._char_corner, horiz, l, horiz,
                 self._char_corner)
-            # l = self.border_formatter(l)
+            # l = self._border_formatter(l)
         else:
             l += "\n"
         return l
@@ -178,3 +218,43 @@ class Blessedtable(Texttable):
         if self._has_border():
             out += self._hline()
         return out[:-1]
+
+
+# import texttable
+
+# print("t?
+
+# table = Texttable()
+# table.set_cols_align(["l", "r", "c"])
+# table.set_cols_valign(["t", "m", "b"])
+# table.add_rows([["Name", "Age", "Nickname"],
+#     ["Mr\nXavier\nHuon", 32, "Xav'"],
+#     ["Mr\nBaptiste\nClement", 1, "Baby"],
+#     ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
+
+# for i in [4,6,14]:
+#     table.set_deco(i)
+#     print(table.draw())
+#     print()
+
+table = Blessedtable(header_format='green_on_blue', border_format='blue_on_red')
+table.set_cols_align(["l", "r", "c"])
+table.set_cols_valign(["t", "m", "b"])
+table.add_rows([["Name", "Age", "Nickname"],
+    ["Mr\nXavier\nHuon", 32, "Xav'"],
+    ["Mr\nBaptiste\nClement", 1, "Baby"],
+    ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
+
+for i in range(15,16):
+    # print(i)
+    table.set_deco(i)
+    print(table.draw())
+    print(table.header_format)
+#  = None
+    # table.reset()
+    table.border_format = 'bold_orange'
+    table.header_format = 'green_on_white'
+    table.column_format = 'blue_on_white'
+    print(table.draw())
+    print(table.border_format)
+    

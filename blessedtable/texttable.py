@@ -262,6 +262,7 @@ class Texttable:
         """
 
         self._deco = deco
+        self._hline_string = None
         return self
 
     def set_header_align(self, array):
