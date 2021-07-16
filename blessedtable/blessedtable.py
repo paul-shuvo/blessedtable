@@ -219,3 +219,4 @@ class Blessedtable(Texttable):
         if self._has_border():
             out += self._hline()
         return out[:-1]
+    

@@ -21,11 +21,11 @@ with open("README.md") as f:
 
 setup(
     name="blessedtable",
-    version="1.0.0b1",
+    version="1.0.0",
     author="Shuvo Kumar Paul",
     author_email="shuvo.k.paul@gmail.com",
     url="https://github.com/paul-shuvo/blessedtable",
-    download_url="https://github.com/paul-shuvo/blessedtable/archive/refs/tags/v1.0.0b1.zip",
+    download_url="https://github.com/paul-shuvo/blessedtable/archive/refs/tags/v1.0.0.zip",
     license="MIT",
     install_requires=[
             "blessed",

@@ -1,12 +1,12 @@
-# blessedtable
-
+![](https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/doc_/../_doc/logo.gif)
+<!-- https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/_doc/init_table.png -->
 Python module for creating colorful formatted ASCII tables.
 
 ![](_doc/main_table.png)
 
 ## Dependencies
 
-This package combines the [__texttable__](https://github.com/foutaise/texttable) and the [__blessed__](https://github.com/jquast/blessed) package; and thus, __blessedtable__. 
+This package combines the [__texttable__](https://github.com/foutaise/texttable) and the [__blessed__](https://github.com/jquast/blessed) package; and thus, __Blessedtable__. 
 
 ## Installing the package
 
@@ -33,20 +33,23 @@ print(table.draw())
 ```
 ![](https://raw.githubusercontent.com/paul-shuvo/blessedtable/master/_doc/empty_table.png)
 
-For styleing `blessedtable` uses three parameters over `textable`. These are `border_format, header_format, and column_format`. 
+For styling `blessedtable` uses three parameters over `textable`. These are `border_format, header_format, and column_format`. 
 
 __`border_format`__ needs to be either `None` , or of type `str`
+
 __`header_format`__ needs to be either `None`, or of type `str`, or a `list` of strings
+
 __`column_format`__ needs to be either `None`, or of type `str`, or a `list` of strings 
 
 __Note:__ The strings should be formatting strings. Examples are given below.
+
 ```python
-'normal_on_norma' # text and background both have default color
+'normal_on_normal' # text and background both have default color
 'red' # text color is red, background has default color
 'red_on_white' # text color is red, background is white
 'italic_red_on_blue' # text italic and red, and background is white
 ```
-All the color options can be found [here](https://blessed.readthedocs.io/en/latest/colors.html). To know more about `blessed`'s formatting, follow this [link](https://blessed.readthedocs.io/en/latest/index.html)
+All the color names should be by name, the color options can be found [here](https://blessed.readthedocs.io/en/latest/colors.html). To know more about `blessed`'s formatting, follow this [link](https://blessed.readthedocs.io/en/latest/index.html)
 
 The three parameters can be set either while initializing or using setters.
 
